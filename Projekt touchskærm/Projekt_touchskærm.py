@@ -1,33 +1,34 @@
 from tkinter import *
 import tkinter
 from PIL import ImageTk, Image
+import os
 
 class TetsGUI:
 	window = Tk()
 	window.title("Erindringsdevice")
 	window.geometry('700x500')
-
-
+	cwd = os.getcwd()
+	cwd+="\ImageFolder"
 
 	#Indlæser billeder til menuer
-	Bruger1Billede=Image.open(r"C:\Users\madsp\Desktop\Bruger1.png")
+	Bruger1Billede=Image.open(cwd+"\Bruger1.png")
 	Bruger1resized=Bruger1Billede.resize((100,100),Image.ANTIALIAS)
 	newBruger1Billede = ImageTk.PhotoImage(Bruger1resized)
 
 	#Indlæser billeder til lyd
-	MuteBillede = Image.open(r"C:\Users\madsp\Desktop\Mute.jpg")
+	MuteBillede = Image.open(cwd+"\Mute.jpg")
 	MuteBilledeResize=MuteBillede.resize((40,40),Image.ANTIALIAS)
 	newMuteBilledeResize = ImageTk.PhotoImage(MuteBilledeResize)
 
-	Lyd1Billede = Image.open(r"C:\Users\madsp\Desktop\Lyd1.jpg")
+	Lyd1Billede = Image.open(cwd+"\Lyd1.jpg")
 	NewLyd1BilledeResize=Lyd1Billede.resize((40,40),Image.ANTIALIAS)
 	newLyd1BilledeResize = ImageTk.PhotoImage(NewLyd1BilledeResize)
 
-	Lyd2Billede = Image.open(r"C:\Users\madsp\Desktop\Lyd2.jpg")
+	Lyd2Billede = Image.open(cwd+"\Lyd2.jpg")
 	NewLyd2BilledeResize=Lyd2Billede.resize((40,40),Image.ANTIALIAS)
 	newLyd2BilledeResize = ImageTk.PhotoImage(NewLyd2BilledeResize)
 
-	Lyd3Billede = Image.open(r"C:\Users\madsp\Desktop\Lyd3.jpg")
+	Lyd3Billede = Image.open(cwd+"\Lyd3.jpg")
 	NewLyd3BilledeResize=Lyd3Billede.resize((40,40),Image.ANTIALIAS)
 	newLyd3BilledeResize = ImageTk.PhotoImage(NewLyd3BilledeResize)
 	
