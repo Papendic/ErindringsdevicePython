@@ -7,18 +7,16 @@ class mainWindow:
 	window = Tk()
 
 class OpenNewWindow:
-
-	def openNewWindow():
-		
+	def openNewWindow(showImage):
 		newWindow=Toplevel(mainWindow.window)
 		newWindow.title("new window")
-		newWindow.geometry("200x200")
+		newWindow.geometry("700x500")
 		Label(newWindow,text="New window")
-
+		#canvas = Canvas(newWindow, width = 700, height = 500)      
+		#canvas.pack() 
+		#canvas.create_image(20,20, anchor=NW, image=showImage)   
+		
 class TetsGUI:
-
-	
-
 	mainWindow.window.title("Erindringsdevice")
 	mainWindow.window.geometry('700x500')
 	cwd = os.getcwd()
@@ -49,35 +47,35 @@ class TetsGUI:
 	
 	
 
-	Bruger1 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede, command=OpenNewWindow.openNewWindow)
+	Bruger1 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede, command=lambda: OpenNewWindow.openNewWindow(newBruger1Billede))
 	Bruger1.pack()
 	Bruger1.place(x=100,y=50)
 
-	Bruger2 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede)
+	Bruger2 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(newBruger1Billede))
 	Bruger2.pack()
 	Bruger2.place(x=250,y=50)
 	
-	Bruger3 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede)
+	Bruger3 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(newBruger1Billede))
 	Bruger3.pack()
 	Bruger3.place(x=400,y=50)
 
-	Bruger4 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede)
+	Bruger4 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(newBruger1Billede))
 	Bruger4.pack()
 	Bruger4.place(x=550,y=50)
 
-	Bruger5 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede)
+	Bruger5 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(newBruger1Billede))
 	Bruger5.pack()
 	Bruger5.place(x=100,y=200)
 
-	Bruger6 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede)
+	Bruger6 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(newBruger1Billede))
 	Bruger6.pack()
 	Bruger6.place(x=250,y=200)
 	
-	Bruger7 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede)
+	Bruger7 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(newBruger1Billede))
 	Bruger7.pack()
 	Bruger7.place(x=400,y=200)
 
-	Bruger8 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede)
+	Bruger8 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(newBruger1Billede))
 	Bruger8.pack()
 	Bruger8.place(x=550,y=200)
 
