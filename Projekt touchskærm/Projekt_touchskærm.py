@@ -37,12 +37,19 @@ class Pictures:
 
 class OpenNewWindow:
 
-	def openNewWindow():
+	def openNewWindow(showImage):
 		
 		newWindow=Toplevel(mainWindow.window)
 		newWindow.title("new window")
-		newWindow.geometry("200x200")
-		Label(newWindow,text="New window")
+		newWindow.geometry("700x500")
+		Label(newWindow,text="New window") 
+		if showImage==Pictures.newBruger1Billede:
+			preSizeImage=Pictures.Bruger1Billede
+		resizedImage = preSizeImage.resize((500,400), Image.ANTIALIAS)
+		photoImg=ImageTk.PhotoImage(resizedImage)
+		img = Label(newWindow,image=photoImg)
+		img.image = photoImg
+		img.place(x=0, y=0)
 
 
 class TetsGUI:
@@ -51,35 +58,35 @@ class TetsGUI:
 	mainWindow.window.geometry('700x500')
 	
 
-	Bruger1 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede, command=lambda: OpenNewWindow.openNewWindow(newBruger1Billede))
+	Bruger1 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=Pictures.newBruger1Billede, command=lambda: OpenNewWindow.openNewWindow(Pictures.newBruger1Billede))
 	Bruger1.pack()
 	Bruger1.place(x=100,y=50)
 
-	Bruger2 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(newBruger1Billede))
+	Bruger2 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=Pictures.newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(Pictures.newBruger1Billede))
 	Bruger2.pack()
 	Bruger2.place(x=250,y=50)
 	
-	Bruger3 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(newBruger1Billede))
+	Bruger3 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=Pictures.newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(Pictures.newBruger1Billede))
 	Bruger3.pack()
 	Bruger3.place(x=400,y=50)
 
-	Bruger4 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(newBruger1Billede))
+	Bruger4 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=Pictures.newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(Pictures.newBruger1Billede))
 	Bruger4.pack()
 	Bruger4.place(x=550,y=50)
 
-	Bruger5 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(newBruger1Billede))
+	Bruger5 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=Pictures.newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(Pictures.newBruger1Billede))
 	Bruger5.pack()
 	Bruger5.place(x=100,y=200)
 
-	Bruger6 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(newBruger1Billede))
+	Bruger6 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=Pictures.newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(Pictures.newBruger1Billede))
 	Bruger6.pack()
 	Bruger6.place(x=250,y=200)
 	
-	Bruger7 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(newBruger1Billede))
+	Bruger7 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=Pictures.newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(Pictures.newBruger1Billede))
 	Bruger7.pack()
 	Bruger7.place(x=400,y=200)
 
-	Bruger8 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(newBruger1Billede))
+	Bruger8 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=Pictures.newBruger1Billede,command=lambda: OpenNewWindow.openNewWindow(Pictures.newBruger1Billede))
 	Bruger8.pack()
 	Bruger8.place(x=550,y=200)
 
