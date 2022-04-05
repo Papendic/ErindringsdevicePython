@@ -2,6 +2,10 @@ from tkinter import *
 import tkinter
 from PIL import ImageTk, Image
 import os
+import PIL.Image as Image
+import io
+import base64
+import pyodbc
 
 
 class mainWindow:
@@ -33,12 +37,38 @@ class Pictures:
 	Lyd3Billede = Image.open(cwd+"\Lyd3.jpg")
 	NewLyd3BilledeResize=Lyd3Billede.resize((40,40),Image.ANTIALIAS)
 	newLyd3BilledeResize = ImageTk.PhotoImage(NewLyd3BilledeResize)
-
+	
+class AzureApi:
+	cwd = os.getcwd()
+	def OpenDataBaseTest(self):
+		server = 'st4prj4.database.windows.net'
+		database = 'st4prj4'
+		username = 'azureuser'
+		password = '{Katrinebjerg123}'   
+		driver= '{ODBC Driver 17 for SQL Server}'
+		with pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
+			with conn.cursor() as cursor:
+				cursor.execute("SELECT * FROM dbo.Test_table")
+				row = cursor.fetchone()
+				while row:
+					print (str(row[0]) + " " + str(row[1]) + " " + str(row[2]) + " " + str(row[3]))
+					row = cursor.fetchone()
+					if str(row[3])!='None':
+					    imageString = str(row[3])
+					if str(row[3])!='None':
+						imageArray = bytes(imageString,"ascii")
+						imagePre = base64.b64decode(imageArray)
+						byteImg=imagePre
+						dataBytesIO = io.BytesIO(imageArray)
+						image= Image.open(dataBytesIO)
+						image.save(cwd+"\Bruger1.jpg")
+						image.show()
 
 class OpenNewWindow:
 
 	def openNewWindow(showImage):
-		
+		apiService= AzureApi()
+		apiService.OpenDataBaseTest()
 		newWindow=Toplevel(mainWindow.window)
 		newWindow.title("new window")
 		newWindow.geometry("700x500")
@@ -52,8 +82,7 @@ class OpenNewWindow:
 		img.place(x=0, y=0)
 
 
-class TetsGUI:
-
+class TestGUI:
 	mainWindow.window.title("Erindringsdevice")
 	mainWindow.window.geometry('700x500')
 	
@@ -109,7 +138,3 @@ class TetsGUI:
 	Lyd3.place(x=250,y=350)
 
 	mainWindow.window.mainloop()
-
-
-
-
