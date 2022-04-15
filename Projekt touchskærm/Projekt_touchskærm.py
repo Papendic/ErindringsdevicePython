@@ -40,6 +40,11 @@ class Pictures:
 	
 class AzureApi:
 	cwd = os.getcwd()
+	def write_file(data, filename):
+    # Convert binary data to proper format and write it on Hard Disk
+		with open(filename, 'wb') as file:
+			 file.write(data)
+
 	def OpenDataBaseTest(self):
 		server = 'st4prj4.database.windows.net'
 		database = 'st4prj4'
@@ -56,13 +61,12 @@ class AzureApi:
 					if str(row[3])!='None':
 					    imageString = str(row[3])
 					if str(row[3])!='None':
-						imageArray = bytes(imageString,"ascii")
-						imagePre = base64.b64decode(imageArray)
-						byteImg=imagePre
-						dataBytesIO = io.BytesIO(imageArray)
-						image= Image.open(dataBytesIO)
-						image.save(cwd+"\Bruger1.jpg")
+						imagePre = base64.b64decode(imageString)
+						image = Image.open(imagePre)
+						write_file(image, cwd+"\Bruger1.jpg")
 						image.show()
+						
+
 
 class OpenNewWindow:
 
