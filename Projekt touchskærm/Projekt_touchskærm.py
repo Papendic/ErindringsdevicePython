@@ -62,10 +62,9 @@ class AzureApi:
 					    imageString = str(row[3])
 					if str(row[3])!='None':
 						imagePre = base64.b64decode(imageString)
-						image = Image.open(imagePre)
-						write_file(image, cwd+"\Bruger1.jpg")
+						image= Image.open(dataBytesIO)
 						image.show()
-						
+						image.save(cwd+"\Bruger1.jpg")
 
 
 class OpenNewWindow:
@@ -89,7 +88,6 @@ class OpenNewWindow:
 class TestGUI:
 	mainWindow.window.title("Erindringsdevice")
 	mainWindow.window.geometry('700x500')
-	
 
 	Bruger1 = Button(mainWindow.window, height ='100', width='100', bg = 'blue', fg='white', image=Pictures.newBruger1Billede, command=lambda: OpenNewWindow.openNewWindow(Pictures.newBruger1Billede))
 	Bruger1.pack()
@@ -123,7 +121,6 @@ class TestGUI:
 	Bruger8.pack()
 	Bruger8.place(x=550,y=200)
 
-	
 	#Knapper til menu  -  lyd
 	Mute = Button(mainWindow.window, height ='40', width='40', bg = 'blue', fg='white', image=Pictures.newMuteBilledeResize)
 	Mute.pack()
