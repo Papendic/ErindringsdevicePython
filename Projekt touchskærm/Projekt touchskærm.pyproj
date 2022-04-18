@@ -28,6 +28,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ImageFolder\Bruger1.png" />
+    <Content Include="ImageFolder\Bruger2.png" />
+    <Content Include="ImageFolder\Bruger3.png" />
+    <Content Include="ImageFolder\Bruger4.png" />
+    <Content Include="ImageFolder\Bruger5.png" />
+    <Content Include="ImageFolder\Bruger6.png" />
+    <Content Include="ImageFolder\Bruger7.png" />
+    <Content Include="ImageFolder\Bruger8.png" />
     <Content Include="ImageFolder\Lyd1.JPG" />
     <Content Include="ImageFolder\Lyd2.JPG" />
     <Content Include="ImageFolder\Lyd3.JPG" />
