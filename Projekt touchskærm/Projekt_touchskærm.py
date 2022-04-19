@@ -267,18 +267,18 @@ class OpenNewWindow:
 		CloseWindow.place(x=560,y=400)
 		Mute = Button(newWindow, height ='60', width='60', bg = 'blue', fg='white', image=Pictures.newMuteBilledeResize)
 		Mute.pack()
-		Mute.place(x=100,y=400)
+		Mute.place(x=70,y=410)
 		Lyd1 = Button(newWindow, height ='60', width='60', bg = 'blue', fg='white', image=Pictures.newLyd1BilledeResize)
 		Lyd1.pack()
-		Lyd1.place(x=200,y=400)
+		Lyd1.place(x=170,y=410)
 
 		Lyd2 = Button(newWindow, height ='60', width='60', bg = 'blue', fg='white', image=Pictures.newLyd2BilledeResize)
 		Lyd2.pack()
-		Lyd2.place(x=300,y=400)
+		Lyd2.place(x=270,y=410)
 
 		Lyd3 = Button(newWindow, height ='60', width='60', bg = 'blue', fg='white', image=Pictures.newLyd3BilledeResize)
 		Lyd3.pack()
-		Lyd3.place(x=400,y=400)
+		Lyd3.place(x=370,y=410)
 		#this can be used to remove a picture
 		#cwd = os.getcwd()
 		#cwd+="\ImageFolder\Bruger2.png"
@@ -290,8 +290,8 @@ class RelativeDTO:
 		self.BrugerList=BrugerList
 	apiService= AzureApi()
 	BrugerList=apiService.DownloadOnStartUp()
-	x = threading.Thread(target=AzureApi.update_search, daemon=True)
-	x.start()
+	#x = threading.Thread(target=AzureApi.update_search, daemon=True)
+	#x.start()
 	
 
 class TestGUI:
