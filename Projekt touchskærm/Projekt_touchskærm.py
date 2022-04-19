@@ -220,7 +220,7 @@ class ErrorWindow:
 
 class OpenNewWindow:
 	def openNewWindow(showImage, _id):
-		ID=_id
+		ID=_id-1
 		relativeObj=RelativeDTO.BrugerList[ID]
 		newWindow=Toplevel(mainWindow.window)
 		newWindow.title("new window")
