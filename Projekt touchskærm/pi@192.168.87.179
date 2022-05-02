@@ -137,32 +137,32 @@ class AzureApi:
 					changedRows=[]
 					for row in allRows:
 						RelativeObj=Relative(row[0],str(row[1]),str(row[2]),str(row[3]),str(row[4]),row[5],row[6])
-						if(RelativeDTO.BrugerList[counter].PersonID==row[0]):
+						if(RelativeDTO.BrugerList[counter].PersonID==Relative(row[0],str(row[1]),str(row[2]),str(row[3]),str(row[4]),row[5],row[6])):
 							RelativeDTO.BrugerList[counter].PersonID=row[0]
-							changedRows.append(Relative(row[0],str(row[1]),str(row[2]),str(row[3]),str(row[4]),row[5],row[6]))
-					for relative in changedRows:
-						RelativeDTO.BrugerList[counter].PersonID= relative.PersonID
-						RelativeDTO.BrugerList[counter].LastName=str(relative.LastName)
-						RelativeDTO.BrugerList[counter].FirstName=str(relative.FirstName)
-						RelativeDTO.BrugerList[counter].DateOfBirth=str(relative.DateOfBirth)
-						RelativeDTO.BrugerList[counter].Relation=str(relative.Relation)
-						RelativeDTO.BrugerList[counter].PersonImage=relative.PersonImage
-						RelativeDTO.BrugerList[counter].SOUND=relative.SOUND
-						if(RelativeDTO.BrugerList[counter].PersonID==1):
+							changedRows.append(row[0],str(row[1]),str(row[2]),str(row[3]),str(row[4]),row[5],row[6])
+					for row in changedRows:
+						RelativeDTO.BrugerList[counter].PersonID=row[0]
+						RelativeDTO.BrugerList[counter].LastName=str(row[1])
+						RelativeDTO.BrugerList[counter].FirstName=str(row[2])
+						RelativeDTO.BrugerList[counter].DateOfBirth=str(row[3])
+						RelativeDTO.BrugerList[counter].Relation=str(row[4])
+						RelativeDTO.BrugerList[counter].PersonImage=row[5]
+						RelativeDTO.BrugerList[counter].SOUND=row[6]
+						if(row[0]==1):
 							TestGUI.MainLabelList[0].config(text=RelativeDTO.BrugerList[counter].FirstName+" " +RelativeDTO.BrugerList[counter].LastName)
-						elif (RelativeDTO.BrugerList[counter].PersonID==2):
+						elif (row[0]==2):
 							TestGUI.MainLabelList[1].config(text=RelativeDTO.BrugerList[counter].FirstName+" " +RelativeDTO.BrugerList[counter].LastName)
-						elif (RelativeDTO.BrugerList[counter].PersonID==3):
+						elif (row[0]==3):
 							TestGUI.MainLabelList[2].config(text=RelativeDTO.BrugerList[counter].FirstName+" " +RelativeDTO.BrugerList[counter].LastName)
-						elif (RelativeDTO.BrugerList[counter].PersonID==4):
+						elif (row[0]==4):
 							TestGUI.MainLabelList[3].config(text=RelativeDTO.BrugerList[counter].FirstName+" " +RelativeDTO.BrugerList[counter].LastName)
-						elif (RelativeDTO.BrugerList[counter].PersonID==5):
+						elif (row[0]==5):
 							TestGUI.MainLabelList[4].config(text=RelativeDTO.BrugerList[counter].FirstName+" " +RelativeDTO.BrugerList[counter].LastName)
-						elif (RelativeDTO.BrugerList[counter].PersonID==6):
+						elif (row[0]==6):
 							TestGUI.MainLabelList[5].config(text=RelativeDTO.BrugerList[counter].FirstName+" " +RelativeDTO.BrugerList[counter].LastName)
-						elif (RelativeDTO.BrugerList[counter].PersonID==7):
+						elif (row[0]==7):
 							TestGUI.MainLabelList[6].config(text=RelativeDTO.BrugerList[counter].FirstName+" " +RelativeDTO.BrugerList[counter].LastName)
-						elif (RelativeDTO.BrugerList[counter].PersonID==8):
+						elif (row[0]==8):
 							TestGUI.MainLabelList[7].config(text=RelativeDTO.BrugerList[counter].FirstName+" " +RelativeDTO.BrugerList[counter].LastName)
 						if RelativeDTO.BrugerList[counter].PersonImage !=None:
 							if(os.path.exists('ImageFolder/Bruger'+str(RelativeDTO.BrugerList[counter].PersonID)+'.png')):
@@ -172,7 +172,6 @@ class AzureApi:
 							img= Image.open(imagePre)
 							imageNameString=str(RelativeDTO.BrugerList[counter].PersonID)
 							img.save('ImageFolder/Bruger'+imageNameString+'.png')
-							Pictures.updatePicture(RelativeDTO.BrugerList[counter].PersonID)
 						if RelativeDTO.BrugerList[counter].SOUND !=None:
 							if(os.path.exists('AudioFolder/Bruger'+str(RelativeDTO.BrugerList[counter].PersonID)+'.mp3')):
 								os.remove('AudioFolder/Bruger'+str(RelativeDTO.BrugerList[counter].PersonID)+'.mp3')
@@ -181,11 +180,12 @@ class AzureApi:
 							audioPre= io.BytesIO(audioString)	
 							with open ('AudioFolder/Bruger'+str(row[0])+'.mp3','wb') as f:
 								f.write(audioPre.getbuffer())
+						
 						#else:
 						#Only use else statement for the update
 						#	ErrorWindow.openErrorWindow('Der var en fejl ved opdatering af data.')
 						counter+=1
-			time.sleep(10)
+			time.sleep(600)
 						
 						
 class Pictures:
@@ -195,97 +195,80 @@ class Pictures:
 	cwd = os.getcwd()
 	cwdUser=cwd+"\ImageFolder"
 	cwdSound=cwd+"\SoundImageFolder"
-	Bruger1Billede=[]
-	Bruger2Billede=[]
-	Bruger3Billede=[]
-	Bruger4Billede=[]
-	Bruger5Billede=[]
-	Bruger6Billede=[]
-	Bruger7Billede=[]
-	Bruger8Billede=[]
-	newBruger1Billede=[]
-	newBruger2Billede=[]
-	newBruger3Billede=[]
-	newBruger4Billede=[]
-	newBruger5Billede=[]
-	newBruger6Billede=[]
-	newBruger7Billede=[]
-	newBruger8Billede=[]
-	def setPictures():
-		#Indlæser billeder til menuer
-		if(os.path.exists(Pictures.cwdUser+"\Bruger1.png")):
-			Pictures.Bruger1Billede=Image.open(Pictures.cwdUser+"\Bruger1.png")
-			Bruger1resized=Pictures.Bruger1Billede.resize((150,150),Image.ANTIALIAS)
-			Pictures.newBruger1Billede = ImageTk.PhotoImage(Bruger1resized)
-		if(os.path.exists(Pictures.cwdUser+"\Bruger2.png")):
-			Pictures.Bruger2Billede=Image.open(Pictures.cwdUser+"\Bruger2.png")
-			Bruger2resized=Pictures.Bruger2Billede.resize((150,150),Image.ANTIALIAS)
-			Pictures.newBruger2Billede = ImageTk.PhotoImage(Bruger2resized)
-		if(os.path.exists(Pictures.cwdUser+"\Bruger3.png")):
-			Pictures.Bruger3Billede=Image.open(Pictures.cwdUser+"\Bruger3.png")
-			Bruger3resized=Pictures.Bruger3Billede.resize((150,150),Image.ANTIALIAS)
-			Pictures.newBruger3Billede = ImageTk.PhotoImage(Bruger3resized)
-		if(os.path.exists(Pictures.cwdUser+"\Bruger4.png")):
-			Pictures.Bruger4Billede=Image.open(Pictures.cwdUser+"\Bruger4.png")
-			Bruger4resized=Pictures.Bruger4Billede.resize((150,150),Image.ANTIALIAS)
-			Pictures.newBruger4Billede = ImageTk.PhotoImage(Bruger4resized)
-		if(os.path.exists(Pictures.cwdUser+"\Bruger5.png")):
-			Pictures.Bruger5Billede=Image.open(Pictures.cwdUser+"\Bruger5.png")
-			Bruger5resized=Pictures.Bruger5Billede.resize((150,150),Image.ANTIALIAS)
-			Pictures.newBruger5Billede = ImageTk.PhotoImage(Bruger5resized)
-		if(os.path.exists(Pictures.cwdUser+"\Bruger6.png")):
-			Pictures.Bruger6Billede=Image.open(Pictures.cwdUser+"\Bruger6.png")
-			Bruger6resized=Pictures.Bruger6Billede.resize((150,150),Image.ANTIALIAS)
-			Pictures.newBruger6Billede = ImageTk.PhotoImage(Bruger6resized)
-		if(os.path.exists(Pictures.cwdUser+"\Bruger7.png")):
-			Pictures.Bruger7Billede=Image.open(Pictures.cwdUser+'\Bruger7.png')
-			Bruger7resized=Pictures.Bruger7Billede.resize((150,150),Image.ANTIALIAS)
-			Pictures.newBruger7Billede = ImageTk.PhotoImage(Bruger7resized)
-		if(os.path.exists(Pictures.cwdUser+'\Bruger8.png')):
-			Pictures.Bruger8Billede=Image.open(Pictures.cwdUser+'\Bruger8.png')
-			Bruger8resized=Pictures.Bruger8Billede.resize((150,150),Image.ANTIALIAS)
-			Pictures.newBruger8Billede = ImageTk.PhotoImage(Bruger8resized)
-	def updatePicture(ID):
-		if(os.path.exists(Pictures.cwdUser+"\Bruger1.png") and ID==1):
-			Pictures.Bruger1Billede=Image.open(Pictures.cwdUser+"\Bruger1.png")
-			Bruger1resized=Pictures.Bruger1Billede.resize((150,150),Image.ANTIALIAS)
-			Pictures.newBruger1Billede = ImageTk.PhotoImage(Bruger1resized)
-			TestGUI.MainBrugerList[0].config(image=Pictures.newBruger1Billede)
-		elif(os.path.exists(Pictures.cwdUser+"\Bruger2.png")and ID==2):
-			Pictures.Bruger2Billede=Image.open(Pictures.cwdUser+"\Bruger2.png")
-			Bruger2resized=Pictures.Bruger2Billede.resize((150,150),Image.ANTIALIAS)
-			Pictures.newBruger2Billede = ImageTk.PhotoImage(Bruger2resized)
-			TestGUI.MainBrugerList[1].config(image=Pictures.newBruger2Billede)
-		elif(os.path.exists(Pictures.cwdUser+"\Bruger3.png")and ID==3):
-			Pictures.Bruger3Billede=Image.open(Pictures.cwdUser+"\Bruger3.png")
-			Bruger3resized=Pictures.Bruger3Billede.resize((150,150),Image.ANTIALIAS)
-			Pictures.newBruger3Billede = ImageTk.PhotoImage(Bruger3resized)
-			TestGUI.MainBrugerList[2].config(image=Pictures.newBruger3Billede)
-		elif(os.path.exists(Pictures.cwdUser+"\Bruger4.png")and ID==4):
-			Pictures.Bruger4Billede=Image.open(Pictures.cwdUser+"\Bruger4.png")
-			Bruger4resized=Pictures.Bruger4Billede.resize((150,150),Image.ANTIALIAS)
-			Pictures.newBruger4Billede = ImageTk.PhotoImage(Bruger4resized)
-			TestGUI.MainBrugerList[3].config(image=Pictures.newBruger4Billede)
-		elif(os.path.exists(Pictures.cwdUser+"\Bruger5.png")and ID==5):
-			Pictures.Bruger5Billede=Image.open(Pictures.cwdUser+"\Bruger5.png")
-			Bruger5resized=Pictures.Bruger5Billede.resize((150,150),Image.ANTIALIAS)
-			Pictures.newBruger5Billede = ImageTk.PhotoImage(Bruger5resized)
-			TestGUI.MainBrugerList[4].config(image=Pictures.newBruger5Billede)
-		elif(os.path.exists(Pictures.cwdUser+"\Bruger6.png")and ID==6):
-			Pictures.Bruger6Billede=Image.open(Pictures.cwdUser+"\Bruger6.png")
-			Bruger6resized=Pictures.Bruger6Billede.resize((150,150),Image.ANTIALIAS)
-			Pictures.newBruger6Billede = ImageTk.PhotoImage(Bruger6resized)
-			TestGUI.MainBrugerList[5].config(image=Pictures.newBruger6Billede)
-		elif(os.path.exists(Pictures.cwdUser+"\Bruger7.png")and ID==7):
-			Pictures.Bruger7Billede=Image.open(Pictures.cwdUser+'\Bruger7.png')
-			Bruger7resized=Pictures.Bruger7Billede.resize((150,150),Image.ANTIALIAS)
-			Pictures.newBruger7Billede = ImageTk.PhotoImage(Bruger7resized)
-			TestGUI.MainBrugerList[6].config(image=Pictures.newBruger7Billede)
-		elif(os.path.exists(Pictures.cwdUser+'\Bruger8.png')and ID==8):
-			Pictures.Bruger8Billede=Image.open(Pictures.cwdUser+'\Bruger8.png')
-			Bruger8resized=Pictures.Bruger8Billede.resize((150,150),Image.ANTIALIAS)
-			Pictures.newBruger8Billede = ImageTk.PhotoImage(Bruger8resized)
-			TestGUI.MainBrugerList[7].config(image=Pictures.newBruger8Billede)
+	#Indlæser billeder til menuer
+	if(os.path.exists(cwdUser+"\Bruger1.png")):
+		Bruger1Billede=Image.open(cwdUser+"\Bruger1.png")
+		Bruger1resized=Bruger1Billede.resize((150,150),Image.ANTIALIAS)
+		newBruger1Billede = ImageTk.PhotoImage(Bruger1resized)
+	if(os.path.exists(cwdUser+"\Bruger2.png")):
+		Bruger2Billede=Image.open(cwdUser+"\Bruger2.png")
+		Bruger2resized=Bruger2Billede.resize((150,150),Image.ANTIALIAS)
+		newBruger2Billede = ImageTk.PhotoImage(Bruger2resized)
+	if(os.path.exists(cwdUser+"\Bruger3.png")):
+		Bruger3Billede=Image.open(cwdUser+"\Bruger3.png")
+		Bruger3resized=Bruger3Billede.resize((150,150),Image.ANTIALIAS)
+		newBruger3Billede = ImageTk.PhotoImage(Bruger3resized)
+	if(os.path.exists(cwdUser+"\Bruger4.png")):
+		Bruger4Billede=Image.open(cwdUser+"\Bruger4.png")
+		Bruger4resized=Bruger4Billede.resize((150,150),Image.ANTIALIAS)
+		newBruger4Billede = ImageTk.PhotoImage(Bruger4resized)
+	if(os.path.exists(cwdUser+"\Bruger5.png")):
+		Bruger5Billede=Image.open(cwdUser+"\Bruger5.png")
+		Bruger5resized=Bruger5Billede.resize((150,150),Image.ANTIALIAS)
+		newBruger5Billede = ImageTk.PhotoImage(Bruger5resized)
+	if(os.path.exists(cwdUser+"\Bruger6.png")):
+		Bruger6Billede=Image.open(cwdUser+"\Bruger6.png")
+		Bruger6resized=Bruger6Billede.resize((150,150),Image.ANTIALIAS)
+		newBruger6Billede = ImageTk.PhotoImage(Bruger6resized)
+	if(os.path.exists(cwdUser+"\Bruger7.png")):
+		Bruger7Billede=Image.open(cwdUser+'\Bruger7.png')
+		Bruger7resized=Bruger7Billede.resize((150,150),Image.ANTIALIAS)
+		newBruger7Billede = ImageTk.PhotoImage(Bruger7resized)
+	if(os.path.exists(cwdUser+'\Bruger8.png')):
+		Bruger8Billede=Image.open(cwdUser+'\Bruger8.png')
+		Bruger8resized=Bruger8Billede.resize((150,150),Image.ANTIALIAS)
+		newBruger8Billede = ImageTk.PhotoImage(Bruger8resized)
+	def updatePicture():
+		if(os.path.exists(cwdUser+"\Bruger1.png")):
+			Bruger1Billede=Image.open(cwdUser+"\Bruger1.png")
+			Bruger1resized=Bruger1Billede.resize((150,150),Image.ANTIALIAS)
+			newBruger1Billede = ImageTk.PhotoImage(Bruger1resized)
+			TestGUI.MainBrugerList[0].config(image=newBruger1Billede)
+		if(os.path.exists(cwdUser+"\Bruger2.png")):
+			Bruger2Billede=Image.open(cwdUser+"\Bruger2.png")
+			Bruger2resized=Bruger2Billede.resize((150,150),Image.ANTIALIAS)
+			newBruger2Billede = ImageTk.PhotoImage(Bruger2resized)
+			TestGUI.MainBrugerList[1].config(image=newBruger2Billede)
+		if(os.path.exists(cwdUser+"\Bruger3.png")):
+			Bruger3Billede=Image.open(cwdUser+"\Bruger3.png")
+			Bruger3resized=Bruger3Billede.resize((150,150),Image.ANTIALIAS)
+			newBruger3Billede = ImageTk.PhotoImage(Bruger3resized)
+			TestGUI.MainBrugerList[2].config(image=newBruger3Billede)
+		if(os.path.exists(cwdUser+"\Bruger4.png")):
+			Bruger4Billede=Image.open(cwdUser+"\Bruger4.png")
+			Bruger4resized=Bruger4Billede.resize((150,150),Image.ANTIALIAS)
+			newBruger4Billede = ImageTk.PhotoImage(Bruger4resized)
+			TestGUI.MainBrugerList[3].config(image=newBruger4Billede)
+		if(os.path.exists(cwdUser+"\Bruger5.png")):
+			Bruger5Billede=Image.open(cwdUser+"\Bruger5.png")
+			Bruger5resized=Bruger5Billede.resize((150,150),Image.ANTIALIAS)
+			newBruger5Billede = ImageTk.PhotoImage(Bruger5resized)
+			TestGUI.MainBrugerList[4].config(image=newBruger5Billede)
+		if(os.path.exists(cwdUser+"\Bruger6.png")):
+			Bruger6Billede=Image.open(cwdUser+"\Bruger6.png")
+			Bruger6resized=Bruger6Billede.resize((150,150),Image.ANTIALIAS)
+			newBruger6Billede = ImageTk.PhotoImage(Bruger6resized)
+			TestGUI.MainBrugerList[5].config(image=newBruger6Billede)
+		if(os.path.exists(cwdUser+"\Bruger7.png")):
+			Bruger7Billede=Image.open(cwdUser+'\Bruger7.png')
+			Bruger7resized=Bruger7Billede.resize((150,150),Image.ANTIALIAS)
+			newBruger7Billede = ImageTk.PhotoImage(Bruger7resized)
+			TestGUI.MainBrugerList[6].config(image=newBruger7Billede)
+		if(os.path.exists(cwdUser+'\Bruger8.png')):
+			Bruger8Billede=Image.open(cwdUser+'\Bruger8.png')
+			Bruger8resized=Bruger8Billede.resize((150,150),Image.ANTIALIAS)
+			newBruger8Billede = ImageTk.PhotoImage(Bruger8resized)
+			TestGUI.MainBrugerList[7].config(image=newBruger8Billede)
 	
 	#Indlæser billeder til lyd
 	MuteBillede = Image.open(cwdSound+"\Mute.JPG")
@@ -331,7 +314,7 @@ class ErrorWindow:
 			CloseWindow.place(x=350,y=250)
 	def closeErrorWindow():
 		AudioPlayer.Stop()
-		ErrorWindow.destroy()
+		errorWindow.destroy()
 		
 
 class NewWindow:
@@ -369,11 +352,11 @@ class NewWindow:
 		img = Label(newWindow,image=photoImg)
 		img.image = photoImg
 		img.place(x=0, y=0)
-		NameLabel = Label(newWindow,text="Jeg er "+relativeObj.FirstName.capitalize()+" " +relativeObj.LastName.capitalize(), font=("Cambria",15), wraplength=280)
+		NameLabel = Label(newWindow,text="Jeg er "+relativeObj.FirstName+" " +relativeObj.LastName, font=("Cambria",15), wraplength=280)
 		NameLabel.place(x=510, y=10)
 		BirthdayLabel = Label(newWindow,text="Jeg blev født " + relativeObj.DateOfBirth, font=("Cambria",15))
 		BirthdayLabel.place(x=510, y=75)
-		RelationLabel= Label(newWindow, text="Jeg er din " + relativeObj.Relation.lower(), font=("Cambria",15))
+		RelationLabel= Label(newWindow, text="Jeg er din " + relativeObj.Relation, font=("Cambria",15))
 		RelationLabel.place(x=510,y=140)
 		PlayLabel= Label(newWindow, text="Tryk her for at høre mere om mig", font=("Cambria",15))
 		PlayLabel.place(x=510,y=205)
@@ -424,7 +407,7 @@ class RelativeDTO:
 		self.BrugerList=BrugerList
 	apiService= AzureApi()
 	BrugerList=apiService.DownloadOnStartUp()
-	x = th.Timer(5,AzureApi.update_search)
+	x = th.Timer(30,AzureApi.update_search)
 	x.start()
 	
 class TestGUI:
@@ -436,16 +419,15 @@ class TestGUI:
 	MainBrugerList=[]
 	MainLabelList=[]
 	#On RPI set the below condition
-	#TestGUI.attributes('-fullscreen',True)
+	#mainWindow.window.attributes('-fullscreen',True)
 	relativeObj=RelativeDTO.BrugerList
-	Pictures.setPictures()
 	isPlaying=False
 	if(relativeObj[0].PersonImage!=None):
 		Bruger1 = Button(TestGUI, height ='150', width='150', bg = 'blue', fg='white', image=Pictures.newBruger1Billede, command=lambda: NewWindow.openNewWindow(Pictures.newBruger1Billede,1))
 		Bruger1.pack()
 		Bruger1.place(x=40,y=10)
 		MainBrugerList.append(Bruger1)
-		Name1Label = Label(TestGUI,text=relativeObj[0].FirstName.capitalize()+" " +relativeObj[0].LastName.capitalize(), font=("Cambria",10), wraplength=280)
+		Name1Label = Label(TestGUI,text=relativeObj[0].FirstName+" " +relativeObj[0].LastName, font=("Cambria",10), wraplength=280)
 		Name1Label.place(x=40, y=170)
 		MainLabelList.append(Name1Label)
 	if(relativeObj[1].PersonImage!=None):
@@ -453,7 +435,7 @@ class TestGUI:
 		Bruger2.pack()
 		Bruger2.place(x=230,y=10)
 		MainBrugerList.append(Bruger2)
-		Name2Label = Label(TestGUI,text=relativeObj[1].FirstName.capitalize()+" " +relativeObj[1].LastName.capitalize(), font=("Cambria",10), wraplength=280)
+		Name2Label = Label(TestGUI,text=relativeObj[1].FirstName+" " +relativeObj[1].LastName, font=("Cambria",10), wraplength=280)
 		Name2Label.place(x=230, y=170)
 		MainLabelList.append(Name2Label)
 	if(relativeObj[2].PersonImage!=None):
@@ -461,7 +443,7 @@ class TestGUI:
 		Bruger3.pack()
 		Bruger3.place(x=420,y=10)
 		MainBrugerList.append(Bruger3)
-		Name3Label = Label(TestGUI,text=relativeObj[2].FirstName.capitalize()+" " +relativeObj[2].LastName.capitalize(), font=("Cambria",10), wraplength=280)
+		Name3Label = Label(mainWindow.root,text=relativeObj[2].FirstName+" " +relativeObj[2].LastName, font=("Cambria",10), wraplength=280)
 		Name3Label.pack()
 		Name3Label.place(x=420, y=170)
 		MainLabelList.append(Name3Label)
@@ -470,7 +452,7 @@ class TestGUI:
 		Bruger4.pack()
 		Bruger4.place(x=610,y=10)
 		MainBrugerList.append(Bruger4)
-		Name4Label = Label(TestGUI,text=relativeObj[3].FirstName.capitalize()+" " +relativeObj[3].LastName.capitalize(), font=("Cambria",10), wraplength=280)
+		Name4Label = Label(TestGUI,text=relativeObj[3].FirstName+" " +relativeObj[3].LastName, font=("Cambria",10), wraplength=280)
 		Name4Label.place(x=610, y=170)
 		MainLabelList.append(Name4Label)
 	if(relativeObj[4].PersonImage!=None):
@@ -478,7 +460,7 @@ class TestGUI:
 		Bruger5.pack()
 		Bruger5.place(x=40,y=200)
 		MainBrugerList.append(Bruger5)
-		Name5Label = Label(TestGUI,text=relativeObj[4].FirstName.capitalize()+" " +relativeObj[4].LastName.capitalize(), font=("Cambria",10), wraplength=280)
+		Name5Label = Label(TestGUI,text=relativeObj[4].FirstName+" " +relativeObj[4].LastName, font=("Cambria",10), wraplength=280)
 		Name5Label.place(x=40, y=360)
 		MainLabelList.append(Name5Label)
 	if(relativeObj[5].PersonImage!=None):
@@ -486,7 +468,7 @@ class TestGUI:
 		Bruger6.pack()
 		Bruger6.place(x=230,y=200)
 		MainBrugerList.append(Bruger6)
-		Name6Label = Label(TestGUI,text=relativeObj[5].FirstName.capitalize()+" " +relativeObj[5].LastName.capitalize(), font=("Cambria",10), wraplength=280)
+		Name6Label = Label(TestGUI,text=relativeObj[5].FirstName+" " +relativeObj[5].LastName, font=("Cambria",10), wraplength=280)
 		Name6Label.place(x=230, y=360)
 		MainLabelList.append(Name6Label)
 	if(relativeObj[6].PersonImage!=None):
@@ -494,7 +476,7 @@ class TestGUI:
 		Bruger7.pack()
 		Bruger7.place(x=420,y=200)
 		MainBrugerList.append(Bruger7)
-		Name7Label = Label(TestGUI,text=relativeObj[6].FirstName.capitalize()+" " +relativeObj[6].LastName.capitalize(), font=("Cambria",10), wraplength=280)
+		Name7Label = Label(TestGUI,text=relativeObj[6].FirstName+" " +relativeObj[6].LastName, font=("Cambria",10), wraplength=280)
 		Name7Label.place(x=420, y=360)	
 		MainLabelList.append(Name7Label)
 	if(relativeObj[7].PersonImage!=None):
@@ -502,7 +484,7 @@ class TestGUI:
 		Bruger8.pack()
 		Bruger8.place(x=610,y=200)
 		MainBrugerList.append(Bruger8)
-		Name8Label = Label(TestGUI,text=relativeObj[7].FirstName.capitalize()+" " +relativeObj[7].LastName.capitalize(), font=("Cambria",10), wraplength=280)
+		Name8Label = Label(TestGUI,text=relativeObj[7].FirstName+" " +relativeObj[7].LastName, font=("Cambria",10), wraplength=280)
 		Name8Label.place(x=610, y=360)
 		MainLabelList.append(Name8Label)
 
