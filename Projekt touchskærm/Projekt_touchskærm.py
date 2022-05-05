@@ -17,14 +17,15 @@ class Root:
 	
 class AudioPlayer:
 	mixer.init()
-	def StopOrPlay(_id,isPlaying,cwd):
+	cwd=os.getcwd()
+	def StopOrPlay(_id,isPlaying):
 		if mixer.music.get_busy() == False:
 			RelativeWindow.isPlaying=False
 		else:
 			RelativeWindow.isPlaying=True
 		if(RelativeWindow.isPlaying==False):
-			if(os.path.exists(cwd+'\AudioFolder\Bruger'+str(_id)+'.mp3')):
-				mixer.music.load(cwd+'\AudioFolder\Bruger'+str(_id)+'.mp3') #Loading Music File
+			if(os.path.exists(AudioPlayer.cwd+'\AudioFolder\Bruger'+str(_id)+'.mp3')):
+				mixer.music.load(AudioPlayer.cwd+'\AudioFolder\Bruger'+str(_id)+'.mp3') #Loading Music File
 				mixer.music.play() #Playing Music with Pygame
 				RelativeWindow.isPlaying=True
 		elif(RelativeWindow.isPlaying==True):
@@ -314,7 +315,7 @@ class ErrorWindow:
 class RelativeWindow:
 	isPlaying=False
 	ButtonList=[]
-	def openRelativeWindow(showImage, _id):
+	def openRelativeWindow(_id):
 		cwd = os.getcwd()
 		ID=_id-1
 		relativeObj=RelativeDTO.BrugerList[ID]
@@ -325,21 +326,21 @@ class RelativeWindow:
 		#On RPI set the below condition
 		#newWindow.attributes('-fullscreen',True)
 		Label(newWindow,text="New window") 
-		if showImage==Pictures.newBruger1Billede:
+		if _id==1:
 			preSizeImage=Pictures.Bruger1Billede
-		elif showImage==Pictures.newBruger2Billede:
+		elif _id==2:
 			preSizeImage=Pictures.Bruger2Billede
-		elif showImage==Pictures.newBruger3Billede:
+		elif _id==3:
 			preSizeImage=Pictures.Bruger3Billede
-		elif showImage==Pictures.newBruger4Billede:
+		elif _id==4:
 			preSizeImage=Pictures.Bruger4Billede
-		elif showImage==Pictures.newBruger5Billede:
+		elif _id==5:
 			preSizeImage=Pictures.Bruger5Billede
-		elif showImage==Pictures.newBruger6Billede:
+		elif _id==6:
 			preSizeImage=Pictures.Bruger6Billede
-		elif showImage==Pictures.newBruger7Billede:
+		elif _id==7:
 			preSizeImage=Pictures.Bruger7Billede
-		elif showImage==Pictures.newBruger8Billede:
+		elif _id==8:
 			preSizeImage=Pictures.Bruger8Billede
 		resizedImage = preSizeImage.resize((500,400), Image.ANTIALIAS)
 		photoImg=ImageTk.PhotoImage(resizedImage)
@@ -381,7 +382,7 @@ class RelativeWindow:
 		Lyd3.pack()
 		Lyd3.place(x=370,y=407)
 		RelativeWindow.ButtonList.append(Lyd3)
-		AudioPlayer.StopOrPlay()
+		AudioPlayer.StopOrPlay(RelativeWindow._id,RelativeWindow.isPlaying)
 
 	def closeRelativeWindow(newWindow):
 		RelativeWindow.ButtonList=[]
@@ -391,11 +392,11 @@ class RelativeWindow:
 		#cwd = os.getcwd()
 		#cwd+="\ImageFolder\Bruger2.png"
 		#os.remove(cwd)
-	def ConfigColor(ButtoniD):
+	def ConfigColor(ButtonId):
 		if(len(RelativeWindow.ButtonList)!=0):
 			for button in RelativeWindow.ButtonList:
 				button.config(bg='red')
-			RelativeWindow.ButtonList[ButtoniD].config(bg='green')
+			RelativeWindow.ButtonList[ButtonId].config(bg='green')
 
 class RelativeDTO:
 	def __init__(self,BrugerList):
@@ -419,70 +420,70 @@ class MainWindow:
 	Pictures.setPictures()
 	isPlaying=False
 	if(relativeObj[0].PersonImage!=None):
-		Bruger1 = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger1Billede, command=lambda: RelativeWindow.openRelativeWindow(Pictures.newBruger1Billede,1))
-		Bruger1.pack()
-		Bruger1.place(x=40,y=10)
-		MainBrugerList.append(Bruger1)
-		Name1Label = Label(MainWindow,text=relativeObj[0].FirstName.title()+" " +relativeObj[0].LastName.title(), font=("Cambria",10), wraplength=280)
-		Name1Label.place(x=40, y=170)
-		MainLabelList.append(Name1Label)
+		Bruger1Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger1Billede, command=lambda: RelativeWindow.openRelativeWindow(1))
+		Bruger1Button.pack()
+		Bruger1Button.place(x=40,y=10)
+		MainBrugerList.append(Bruger1Button)
+		Bruger1Label = Label(MainWindow,text=relativeObj[0].FirstName.title()+" " +relativeObj[0].LastName.title(), font=("Cambria",10), wraplength=280)
+		Bruger1Label.place(x=40, y=170)
+		MainLabelList.append(Bruger1Label)
 	if(relativeObj[1].PersonImage!=None):
-		Bruger2 = Button(MainWindow,height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger2Billede,command=lambda: RelativeWindow.openRelativeWindow(Pictures.newBruger2Billede,2))
-		Bruger2.pack()
-		Bruger2.place(x=230,y=10)
-		MainBrugerList.append(Bruger2)
-		Name2Label = Label(MainWindow,text=relativeObj[1].FirstName.title()+" " +relativeObj[1].LastName.title(), font=("Cambria",10), wraplength=280)
-		Name2Label.place(x=230, y=170)
-		MainLabelList.append(Name2Label)
+		Bruger2Button = Button(MainWindow,height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger2Billede,command=lambda: RelativeWindow.openRelativeWindow(2))
+		Bruger2Button.pack()
+		Bruger2Button.place(x=230,y=10)
+		MainBrugerList.append(Bruger2Button)
+		Bruger2Label = Label(MainWindow,text=relativeObj[1].FirstName.title()+" " +relativeObj[1].LastName.title(), font=("Cambria",10), wraplength=280)
+		Bruger2Label.place(x=230, y=170)
+		MainLabelList.append(Bruger2Label)
 	if(relativeObj[2].PersonImage!=None):
-		Bruger3 = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger3Billede,command=lambda: RelativeWindow.openRelativeWindow(Pictures.newBruger3Billede,3))
-		Bruger3.pack()
-		Bruger3.place(x=420,y=10)
-		MainBrugerList.append(Bruger3)
-		Name3Label = Label(MainWindow,text=relativeObj[2].FirstName.title()+" " +relativeObj[2].LastName.title(), font=("Cambria",10), wraplength=280)
-		Name3Label.pack()
-		Name3Label.place(x=420, y=170)
-		MainLabelList.append(Name3Label)
+		Bruger3Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger3Billede,command=lambda: RelativeWindow.openRelativeWindow(3))
+		Bruger3Button.pack()
+		Bruger3Button.place(x=420,y=10)
+		MainBrugerList.append(Bruger3Button)
+		Bruger3Label = Label(MainWindow,text=relativeObj[2].FirstName.title()+" " +relativeObj[2].LastName.title(), font=("Cambria",10), wraplength=280)
+		Bruger3Label.pack()
+		Bruger3Label.place(x=420, y=170)
+		MainLabelList.append(Bruger3Label)
 	if(relativeObj[3].PersonImage!=None):
-		Bruger4 = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger4Billede,command=lambda: RelativeWindow.openRelativeWindow(Pictures.newBruger4Billede,4))
-		Bruger4.pack()
-		Bruger4.place(x=610,y=10)
-		MainBrugerList.append(Bruger4)
-		Name4Label = Label(MainWindow,text=relativeObj[3].FirstName.title()+" " +relativeObj[3].LastName.title(), font=("Cambria",10), wraplength=280)
-		Name4Label.place(x=610, y=170)
-		MainLabelList.append(Name4Label)
+		Bruger4Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger4Billede,command=lambda: RelativeWindow.openRelativeWindow(4))
+		Bruger4Button.pack()
+		Bruger4Button.place(x=610,y=10)
+		MainBrugerList.append(Bruger4Button)
+		Bruger4Label = Label(MainWindow,text=relativeObj[3].FirstName.title()+" " +relativeObj[3].LastName.title(), font=("Cambria",10), wraplength=280)
+		Bruger4Label.place(x=610, y=170)
+		MainLabelList.append(Bruger4Label)
 	if(relativeObj[4].PersonImage!=None):
-		Bruger5 = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger5Billede,command=lambda: RelativeWindow.openRelativeWindow(Pictures.newBruger5Billede,5))
-		Bruger5.pack()
-		Bruger5.place(x=40,y=200)
-		MainBrugerList.append(Bruger5)
-		Name5Label = Label(MainWindow,text=relativeObj[4].FirstName.title() + " " +relativeObj[4].LastName.title(), font=("Cambria",10), wraplength=280)
-		Name5Label.place(x=40, y=360)
-		MainLabelList.append(Name5Label)
+		Bruger5Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger5Billede,command=lambda: RelativeWindow.openRelativeWindow(5))
+		Bruger5Button.pack()
+		Bruger5Button.place(x=40,y=200)
+		MainBrugerList.append(Bruger5Button)
+		Bruger5Label = Label(MainWindow,text=relativeObj[4].FirstName.title() + " " +relativeObj[4].LastName.title(), font=("Cambria",10), wraplength=280)
+		Bruger5Label.place(x=40, y=360)
+		MainLabelList.append(Bruger5Label)
 	if(relativeObj[5].PersonImage!=None):
-		Bruger6 = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger6Billede,command=lambda: RelativeWindow.openRelativeWindow(Pictures.newBruger6Billede,6))
-		Bruger6.pack()
-		Bruger6.place(x=230,y=200)
-		MainBrugerList.append(Bruger6)
-		Name6Label = Label(MainWindow,text=relativeObj[5].FirstName.title() + " " +relativeObj[5].LastName.title(), font=("Cambria",10), wraplength=280)
-		Name6Label.place(x=230, y=360)
-		MainLabelList.append(Name6Label)
+		Bruger6Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger6Billede,command=lambda: RelativeWindow.openRelativeWindow(6))
+		Bruger6Button.pack()
+		Bruger6Button.place(x=230,y=200)
+		MainBrugerList.append(Bruger6Button)
+		Bruger6Label = Label(MainWindow,text=relativeObj[5].FirstName.title() + " " +relativeObj[5].LastName.title(), font=("Cambria",10), wraplength=280)
+		Bruger6Label.place(x=230, y=360)
+		MainLabelList.append(Bruger6Label)
 	if(relativeObj[6].PersonImage!=None):
-		Bruger7 = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger7Billede,command=lambda: RelativeWindow.openRelativeWindow(Pictures.newBruger7Billede,7))
-		Bruger7.pack()
-		Bruger7.place(x=420,y=200)
-		MainBrugerList.append(Bruger7)
-		Name7Label = Label(MainWindow,text=relativeObj[6].FirstName.title()+" " +relativeObj[6].LastName.title(), font=("Cambria",10), wraplength=280)
-		Name7Label.place(x=420, y=360)	
-		MainLabelList.append(Name7Label)
+		Bruger7Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger7Billede,command=lambda: RelativeWindow.openRelativeWindow(7))
+		Bruger7Button.pack()
+		Bruger7Button.place(x=420,y=200)
+		MainBrugerList.append(Bruger7Button)
+		Bruger7Label = Label(MainWindow,text=relativeObj[6].FirstName.title()+" " +relativeObj[6].LastName.title(), font=("Cambria",10), wraplength=280)
+		Bruger7Label.place(x=420, y=360)	
+		MainLabelList.append(Bruger7Label)
 	if(relativeObj[7].PersonImage!=None):
-		Bruger8 = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger8Billede,command=lambda: RelativeWindow.openRelativeWindow(Pictures.newBruger8Billede,8))
-		Bruger8.pack()
-		Bruger8.place(x=610,y=200)
-		MainBrugerList.append(Bruger8)
-		Name8Label = Label(MainWindow,text=relativeObj[7].FirstName.title()+" " +relativeObj[7].LastName.title(), font=("Cambria",10), wraplength=280)
-		Name8Label.place(x=610, y=360)
-		MainLabelList.append(Name8Label)
+		Bruger8Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger8Billede,command=lambda: RelativeWindow.openRelativeWindow(8))
+		Bruger8Button.pack()
+		Bruger8Button.place(x=610,y=200)
+		MainBrugerList.append(Bruger8Button)
+		Bruger8Label = Label(MainWindow,text=relativeObj[7].FirstName.title()+" " +relativeObj[7].LastName.title(), font=("Cambria",10), wraplength=280)
+		Bruger8Label.place(x=610, y=360)
+		MainLabelList.append(Bruger8Label)
 
 	#Knapper til menu  -  lyd
 	Mute = Button(MainWindow, height ='64', width='64', bg = 'red', fg='white', image=Pictures.newMuteBilledeResize, command=lambda: AudioPlayer.MuteVolume())
@@ -509,10 +510,10 @@ class MainWindow:
 	CloseWindow.pack()
 	CloseWindow.place(x=530,y=400)
 
-	def ConfigColor(ButtoniD):
+	def ConfigColor(ButtonId):
 		for button in MainWindow.MainAudioList:
 		    button.config(bg='red')
-		MainWindow.MainAudioList[ButtoniD].config(bg='green')
+		MainWindow.MainAudioList[ButtonId].config(bg='green')
 
 class Initiate:
 	Root.root.attributes('-topmost',False)
