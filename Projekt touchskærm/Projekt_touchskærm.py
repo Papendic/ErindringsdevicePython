@@ -103,9 +103,6 @@ class AzureApi:
 				audioPre= io.BytesIO(audioString)	
 				with open ('AudioFolder/Bruger'+str(PersonID)+'.mp3','wb') as f:
 					f.write(audioPre.getbuffer())
-			#else:
-			#Only use else statement for the update
-				#ErrorWindow.openErrorWindow('AudioError')
 			BrugerList.append(Relative(PersonID,LastName,FirstName,DateOfBirth,Relation,PersonImage,SOUND))
 		return BrugerList
 
@@ -165,9 +162,9 @@ class AzureApi:
 							audioPre= io.BytesIO(audioString)	
 							with open ('AudioFolder/Bruger'+str(row[0])+'.mp3','wb') as f:
 								f.write(audioPre.getbuffer())
-						#else:
-						#Only use else statement for the update
-						#	ErrorWindow.openErrorWindow('Der var en fejl ved opdatering af data.')
+						else:
+						Only use else statement for the update
+							ErrorWindow.openErrorWindow('Der var en fejl ved opdatering af data.')
 						counter+=1
 			time.sleep(10)
 												
