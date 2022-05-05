@@ -17,14 +17,15 @@ class Root:
 	
 class AudioPlayer:
 	mixer.init()
-	def StopOrPlay(_id,isPlaying,cwd):
+	cwd=os.getcwd()
+	def StopOrPlay(_id,isPlaying):
 		if mixer.music.get_busy() == False:
 			RelativeWindow.isPlaying=False
 		else:
 			RelativeWindow.isPlaying=True
 		if(RelativeWindow.isPlaying==False):
-			if(os.path.exists(cwd+'\AudioFolder\Bruger'+str(_id)+'.mp3')):
-				mixer.music.load(cwd+'\AudioFolder\Bruger'+str(_id)+'.mp3') #Loading Music File
+			if(os.path.exists(AudioPlayer.cwd+'\AudioFolder\Bruger'+str(_id)+'.mp3')):
+				mixer.music.load(AudioPlayer.cwd+'\AudioFolder\Bruger'+str(_id)+'.mp3') #Loading Music File
 				mixer.music.play() #Playing Music with Pygame
 				RelativeWindow.isPlaying=True
 		elif(RelativeWindow.isPlaying==True):
@@ -317,7 +318,7 @@ class ErrorWindow:
 class RelativeWindow:
 	isPlaying=False
 	ButtonList=[]
-	def openRelativeWindow(showImage, _id):
+	def openRelativeWindow(_id):
 		cwd = os.getcwd()
 		ID=_id-1
 		relativeObj=RelativeDTO.BrugerList[ID]
@@ -328,21 +329,21 @@ class RelativeWindow:
 		#On RPI set the below condition
 		#newWindow.attributes('-fullscreen',True)
 		Label(newWindow,text="New window") 
-		if showImage==Pictures.newBruger1Billede:
+		if _id==1:
 			preSizeImage=Pictures.Bruger1Billede
-		elif showImage==Pictures.newBruger2Billede:
+		elif _id==2:
 			preSizeImage=Pictures.Bruger2Billede
-		elif showImage==Pictures.newBruger3Billede:
+		elif _id==3:
 			preSizeImage=Pictures.Bruger3Billede
-		elif showImage==Pictures.newBruger4Billede:
+		elif _id==4:
 			preSizeImage=Pictures.Bruger4Billede
-		elif showImage==Pictures.newBruger5Billede:
+		elif _id==5:
 			preSizeImage=Pictures.Bruger5Billede
-		elif showImage==Pictures.newBruger6Billede:
+		elif _id==6:
 			preSizeImage=Pictures.Bruger6Billede
-		elif showImage==Pictures.newBruger7Billede:
+		elif _id==7:
 			preSizeImage=Pictures.Bruger7Billede
-		elif showImage==Pictures.newBruger8Billede:
+		elif _id==8:
 			preSizeImage=Pictures.Bruger8Billede
 		resizedImage = preSizeImage.resize((500,400), Image.ANTIALIAS)
 		photoImg=ImageTk.PhotoImage(resizedImage)
@@ -384,7 +385,7 @@ class RelativeWindow:
 		Lyd3.pack()
 		Lyd3.place(x=370,y=407)
 		RelativeWindow.ButtonList.append(Lyd3)
-		AudioPlayer.StopOrPlay()
+		AudioPlayer.StopOrPlay(RelativeWindow._id,RelativeWindow.isPlaying)
 
 	def closeRelativeWindow(newWindow):
 		RelativeWindow.ButtonList=[]
@@ -394,11 +395,11 @@ class RelativeWindow:
 		#cwd = os.getcwd()
 		#cwd+="\ImageFolder\Bruger2.png"
 		#os.remove(cwd)
-	def ConfigColor(ButtoniD):
+	def ConfigColor(ButtonId):
 		if(len(RelativeWindow.ButtonList)!=0):
 			for button in RelativeWindow.ButtonList:
 				button.config(bg='red')
-			RelativeWindow.ButtonList[ButtoniD].config(bg='green')
+			RelativeWindow.ButtonList[ButtonId].config(bg='green')
 
 class RelativeDTO:
 	def __init__(self,BrugerList):
@@ -422,7 +423,7 @@ class MainWindow:
 	Pictures.setPictures()
 	isPlaying=False
 	if(relativeObj[0].PersonImage!=None):
-		Bruger1Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger1Billede, command=lambda: RelativeWindow.openRelativeWindow(Pictures.newBruger1Billede,1))
+		Bruger1Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger1Billede, command=lambda: RelativeWindow.openRelativeWindow(1))
 		Bruger1Button.pack()
 		Bruger1Button.place(x=40,y=10)
 		MainBrugerList.append(Bruger1Button)
@@ -430,7 +431,7 @@ class MainWindow:
 		Bruger1Label.place(x=40, y=170)
 		MainLabelList.append(Bruger1Label)
 	if(relativeObj[1].PersonImage!=None):
-		Bruger2Button = Button(MainWindow,height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger2Billede,command=lambda: RelativeWindow.openRelativeWindow(Pictures.newBruger2Billede,2))
+		Bruger2Button = Button(MainWindow,height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger2Billede,command=lambda: RelativeWindow.openRelativeWindow(2))
 		Bruger2Button.pack()
 		Bruger2Button.place(x=230,y=10)
 		MainBrugerList.append(Bruger2Button)
@@ -438,7 +439,7 @@ class MainWindow:
 		Bruger2Label.place(x=230, y=170)
 		MainLabelList.append(Bruger2Label)
 	if(relativeObj[2].PersonImage!=None):
-		Bruger3Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger3Billede,command=lambda: RelativeWindow.openRelativeWindow(Pictures.newBruger3Billede,3))
+		Bruger3Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger3Billede,command=lambda: RelativeWindow.openRelativeWindow(3))
 		Bruger3Button.pack()
 		Bruger3Button.place(x=420,y=10)
 		MainBrugerList.append(Bruger3Button)
@@ -447,7 +448,7 @@ class MainWindow:
 		Bruger3Label.place(x=420, y=170)
 		MainLabelList.append(Bruger3Label)
 	if(relativeObj[3].PersonImage!=None):
-		Bruger4Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger4Billede,command=lambda: RelativeWindow.openRelativeWindow(Pictures.newBruger4Billede,4))
+		Bruger4Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger4Billede,command=lambda: RelativeWindow.openRelativeWindow(4))
 		Bruger4Button.pack()
 		Bruger4Button.place(x=610,y=10)
 		MainBrugerList.append(Bruger4Button)
@@ -455,7 +456,7 @@ class MainWindow:
 		Bruger4Label.place(x=610, y=170)
 		MainLabelList.append(Bruger4Label)
 	if(relativeObj[4].PersonImage!=None):
-		Bruger5Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger5Billede,command=lambda: RelativeWindow.openRelativeWindow(Pictures.newBruger5Billede,5))
+		Bruger5Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger5Billede,command=lambda: RelativeWindow.openRelativeWindow(5))
 		Bruger5Button.pack()
 		Bruger5Button.place(x=40,y=200)
 		MainBrugerList.append(Bruger5Button)
@@ -463,7 +464,7 @@ class MainWindow:
 		Bruger5Label.place(x=40, y=360)
 		MainLabelList.append(Bruger5Label)
 	if(relativeObj[5].PersonImage!=None):
-		Bruger6Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger6Billede,command=lambda: RelativeWindow.openRelativeWindow(Pictures.newBruger6Billede,6))
+		Bruger6Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger6Billede,command=lambda: RelativeWindow.openRelativeWindow(6))
 		Bruger6Button.pack()
 		Bruger6Button.place(x=230,y=200)
 		MainBrugerList.append(Bruger6Button)
@@ -471,7 +472,7 @@ class MainWindow:
 		Bruger6Label.place(x=230, y=360)
 		MainLabelList.append(Bruger6Label)
 	if(relativeObj[6].PersonImage!=None):
-		Bruger7Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger7Billede,command=lambda: RelativeWindow.openRelativeWindow(Pictures.newBruger7Billede,7))
+		Bruger7Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger7Billede,command=lambda: RelativeWindow.openRelativeWindow(7))
 		Bruger7Button.pack()
 		Bruger7Button.place(x=420,y=200)
 		MainBrugerList.append(Bruger7Button)
@@ -479,7 +480,7 @@ class MainWindow:
 		Bruger7Label.place(x=420, y=360)	
 		MainLabelList.append(Bruger7Label)
 	if(relativeObj[7].PersonImage!=None):
-		Bruger8Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger8Billede,command=lambda: RelativeWindow.openRelativeWindow(Pictures.newBruger8Billede,8))
+		Bruger8Button = Button(MainWindow, height ='154', width='154', bg = 'LightPink1', fg='white', image=Pictures.newBruger8Billede,command=lambda: RelativeWindow.openRelativeWindow(8))
 		Bruger8Button.pack()
 		Bruger8Button.place(x=610,y=200)
 		MainBrugerList.append(Bruger8Button)
@@ -512,10 +513,10 @@ class MainWindow:
 	CloseWindow.pack()
 	CloseWindow.place(x=530,y=400)
 
-	def ConfigColor(ButtoniD):
+	def ConfigColor(ButtonId):
 		for button in MainWindow.MainAudioList:
 		    button.config(bg='red')
-		MainWindow.MainAudioList[ButtoniD].config(bg='green')
+		MainWindow.MainAudioList[ButtonId].config(bg='green')
 
 class Initiate:
 	Root.root.attributes('-topmost',False)
