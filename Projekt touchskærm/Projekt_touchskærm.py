@@ -68,10 +68,9 @@ class Relative:
 		self.PersonImage = PersonImage
 		self.SOUND = SOUND
 	
-class AzureApi:
+class DataAccess:
 
 	cwd = os.getcwd()
-	
 	def DownloadOnStartUp(self):
 		BrugerList=[]
 		conn=mysql.connector.connect(host='34.88.203.155',user='UserAnton',password='RelativeDatabase',database='RelativeDatabase')
@@ -79,35 +78,35 @@ class AzureApi:
 		#with conn.cursor() as cursor:
 		mycursor=conn.cursor()
 		query="""SELECT * FROM RelativeDatabase"""
-		m=mycursor.execute(query)
-		allRows = mycursor.fetchall()
-		for row in allRows:
-			PersonID=row[0]
-			LastName=str(row[1])
-			FirstName=str(row[2])
-			DateOfBirth=str(row[3])
-			Relation=str(row[4])
-			PersonImage=row[5]
-			SOUND=row[6]
-			if PersonImage !=None:
-				if(os.path.exists('ImageFolder/Bruger'+str(PersonID)+'.png')):
-					os.remove('ImageFolder/Bruger'+str(PersonID)+'.png')
-					imageString = PersonImage
-					imagePre= io.BytesIO(imageString)	
-					img= Image.open(imagePre)
-					imageNameString=str(PersonID)
-					img.save('ImageFolder/Bruger'+imageNameString+'.png')
-			if SOUND !=None:
-				if(os.path.exists('AudioFolder/Bruger'+str(PersonID)+'.mp3')):
-					os.remove('AudioFolder/Bruger'+str(PersonID)+'.mp3')
-				audioString = SOUND
-				audioPre= io.BytesIO(audioString)	
-				with open ('AudioFolder/Bruger'+str(PersonID)+'.mp3','wb') as f:
-					f.write(audioPre.getbuffer())
-			#else:
-			#Only use else statement for the update
-				#ErrorWindow.openErrorWindow('AudioError')
-			BrugerList.append(Relative(PersonID,LastName,FirstName,DateOfBirth,Relation,PersonImage,SOUND))
+		try:	
+			m=mycursor.execute(query)
+			allRows = mycursor.fetchall()
+			for row in allRows:
+				PersonID=row[0]
+				LastName=str(row[1])
+				FirstName=str(row[2])
+				DateOfBirth=str(row[3])
+				Relation=str(row[4])
+				PersonImage=row[5]
+				SOUND=row[6]
+				if PersonImage !=None:
+					if(os.path.exists('ImageFolder/Bruger'+str(PersonID)+'.png')):
+						os.remove('ImageFolder/Bruger'+str(PersonID)+'.png')
+						imageString = PersonImage
+						imagePre= io.BytesIO(imageString)	
+						img= Image.open(imagePre)
+						imageNameString=str(PersonID)
+						img.save('ImageFolder/Bruger'+imageNameString+'.png')
+				if SOUND !=None:
+					if(os.path.exists('AudioFolder/Bruger'+str(PersonID)+'.mp3')):
+						os.remove('AudioFolder/Bruger'+str(PersonID)+'.mp3')
+					audioString = SOUND
+					audioPre= io.BytesIO(audioString)	
+					with open ('AudioFolder/Bruger'+str(PersonID)+'.mp3','wb') as f:
+						f.write(audioPre.getbuffer())
+				BrugerList.append(Relative(PersonID,LastName,FirstName,DateOfBirth,Relation,PersonImage,SOUND))
+		except:		
+			ErrowWindow.openErrorWindow()
 		return BrugerList
 
 	def update_search():
@@ -187,14 +186,14 @@ class Pictures:
 	Bruger6Billede=[]
 	Bruger7Billede=[]
 	Bruger8Billede=[]
-	newBruger1Billede=[]
-	newBruger2Billede=[]
-	newBruger3Billede=[]
-	newBruger4Billede=[]
-	newBruger5Billede=[]
-	newBruger6Billede=[]
-	newBruger7Billede=[]
-	newBruger8Billede=[]
+	newBruger1Billede=PhotoImage
+	newBruger2Billede=PhotoImage
+	newBruger3Billede=PhotoImage
+	newBruger4Billede=PhotoImage
+	newBruger5Billede=PhotoImage
+	newBruger6Billede=PhotoImage
+	newBruger7Billede=PhotoImage
+	newBruger8Billede=PhotoImage
 	def setPictures():
 		#Indlæser billeder til menuer
 		if(os.path.exists(Pictures.cwdUser+"\Bruger1.png")):
@@ -277,27 +276,23 @@ class Pictures:
 	newMuteBilledeResize = ImageTk.PhotoImage(MuteBilledeResize)
 
 	Lyd1Billede = Image.open(cwdSound+"\Lyd1.JPG")
-	NewLyd1BilledeResize=Lyd1Billede.resize((60,60),Image.ANTIALIAS)
+	Lyd1BilledeResize=Lyd1Billede.resize((60,60),Image.ANTIALIAS)
 	newLyd1BilledeResize = ImageTk.PhotoImage(NewLyd1BilledeResize)
 
 	Lyd2Billede = Image.open(cwdSound+"\Lyd2.JPG")
-	NewLyd2BilledeResize=Lyd2Billede.resize((60,60),Image.ANTIALIAS)
+	Lyd2BilledeResize=Lyd2Billede.resize((60,60),Image.ANTIALIAS)
 	newLyd2BilledeResize = ImageTk.PhotoImage(NewLyd2BilledeResize)
 
 	Lyd3Billede = Image.open(cwdSound+"\Lyd3.JPG")
-	NewLyd3BilledeResize=Lyd3Billede.resize((60,60),Image.ANTIALIAS)
+	Lyd3BilledeResize=Lyd3Billede.resize((60,60),Image.ANTIALIAS)
 	newLyd3BilledeResize = ImageTk.PhotoImage(NewLyd3BilledeResize)
 
 	PlaybuttonBillede = Image.open(cwdSound+"\Pauseplay.png")
-	NewPlaybuttonBillede=PlaybuttonBillede.resize((135,135),Image.ANTIALIAS)
+	PlaybuttonResize=PlaybuttonBillede.resize((135,135),Image.ANTIALIAS)
 	NewPlaybuttonBillede = ImageTk.PhotoImage(NewPlaybuttonBillede)
-	
-	StopbuttonBillede = Image.open(cwdSound+"\StopButton.png")
-	NewStopbuttonBillede=StopbuttonBillede.resize((135,135),Image.ANTIALIAS)
-	NewStopbuttonBillede = ImageTk.PhotoImage(NewStopbuttonBillede)
 				
 class ErrorWindow:
-	def openErrorWindow(ErrorType):
+	def openErrorWindow():
 		errorWindow=Toplevel(Root.window)
 		errorWindow.title("Error Window")
 		errorWindow.geometry("800x480")
@@ -306,7 +301,7 @@ class ErrorWindow:
 		#errorrWindow.attributes('-fullscreen',True)
 		Label(errorWindow,text="Error Window")
 		if(ErrorType=='AudioError'):
-			errorLabel=Label(errorWindow,text='There was error getting the audio',font=("Cambria",20))
+			errorLabel=Label(errorWindow,text='Der kunne ikke oprettes internet forbindelse',font=("Cambria",20))
 			errorLabel.place(x=350,y=50)
 			CloseWindow = Button(errorWindow, height ='2', width='20',bg='white', text='Godkend', command=errorWindow.closeErrorWindow)
 			CloseWindow.pack()
@@ -387,14 +382,11 @@ class RelativeWindow:
 		RelativeWindow.ButtonList.append(Lyd3)
 		AudioPlayer.StopOrPlay(RelativeWindow._id,RelativeWindow.isPlaying)
 
-	def closeRelativeWindow(newWindow):
+	def closeRelativeWindow():
 		RelativeWindow.ButtonList=[]
 		AudioPlayer.Stop()
 		newWindow.destroy()
-		#this can be used to remove a picture
-		#cwd = os.getcwd()
-		#cwd+="\ImageFolder\Bruger2.png"
-		#os.remove(cwd)
+		
 	def ConfigColor(ButtonId):
 		if(len(RelativeWindow.ButtonList)!=0):
 			for button in RelativeWindow.ButtonList:
@@ -402,11 +394,9 @@ class RelativeWindow:
 			RelativeWindow.ButtonList[ButtonId].config(bg='green')
 
 class RelativeDTO:
-	def __init__(self,BrugerList):
-		self.BrugerList=BrugerList
-	apiService= AzureApi()
-	BrugerList=apiService.DownloadOnStartUp()
-	x = th.Timer(5,AzureApi.update_search)
+	DataAccesService= DataAccess()
+	BrugerList=DataAccesService.DownloadOnStartUp()
+	x = th.Timer(5,DataAccess.update_search)
 	x.start()
 	
 class MainWindow:
