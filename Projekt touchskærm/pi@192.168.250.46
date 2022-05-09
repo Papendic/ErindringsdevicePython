@@ -76,7 +76,7 @@ class AzureApi:
 		BrugerList=[]
 		conn=mysql.connector.connect(host='34.88.203.155',user='UserAnton',password='RelativeDatabase',database='RelativeDatabase')
 		mycursor=conn.cursor()
-		query="""SELECT * FROM RelativeTable"""
+		query="""SELECT * from RelativeTable"""
 		m=mycursor.execute(query)
 		allRows = mycursor.fetchall()
 		for row in allRows:
@@ -355,7 +355,7 @@ class RelativeWindow:
 		RelationLabel.place(x=515,y=140)
 		PlayLabel= Label(newWindow, text="Tryk her for at høre mere om mig", font=("Cambria",13))
 		PlayLabel.place(x=515,y=205)
-		PlaySound = Button(newWindow, height ='140', width='140', bg = 'LightPink1', fg='white', image=Pictures.NewPlaybuttonBillede, command=lambda: AudioPlayer.StopOrPlay(RelativeWindow._id,RelativeWindow.isPlaying))
+		PlaySound = Button(newWindow, height ='140', width='140', bg = 'LightPink1', fg='white', image=Pictures.NewPlaybuttonBillede, command=lambda: AudioPlayer.StopOrPlay(_id,RelativeWindow.isPlaying))
 		PlaySound.pack()
 		PlaySound.place(x=590,y=250)
 
