@@ -71,7 +71,7 @@ class Relative:
 class DataAccess:
 
 	cwd = os.getcwd()
-	def DownloadOnStartUp(self):
+	def DownloadOnStartUp():
 		BrugerList=[]
 		conn=mysql.connector.connect(host='34.88.203.155',user='UserAnton',password='RelativeDatabase',database='RelativeDatabase')
 		mycursor=conn.cursor()
@@ -113,60 +113,61 @@ class DataAccess:
 			conn=mysql.connector.connect(host='34.88.203.155',user='UserAnton',password='RelativeDatabase',database='RelativeDatabase')
 			mycursor=conn.cursor()
 			query="""SELECT * from RelativeTable"""
-			m=mycursor.execute(query)
-			allRows = mycursor.fetchall()
-			counter=0
-			counter1=0
-			changedRows=[]
-			for row in allRows:
-				RelativeObj=Relative(row[0],str(row[1]),str(row[2]),str(row[3]),str(row[4]),row[5],row[6])
-				if(RelativeDTO.BrugerList[counter].PersonID==row[0]):
-					RelativeDTO.BrugerList[counter].PersonID=row[0]
-					changedRows.append(Relative(row[0],str(row[1]),str(row[2]),str(row[3]),str(row[4]),row[5],row[6]))
-					counter1+=1
-			for relative in changedRows:
-				RelativeDTO.BrugerList[counter].PersonID= relative.PersonID
-				RelativeDTO.BrugerList[counter].LastName=str(relative.LastName)
-				RelativeDTO.BrugerList[counter].FirstName=str(relative.FirstName)
-				RelativeDTO.BrugerList[counter].DateOfBirth=str(relative.DateOfBirth)
-				RelativeDTO.BrugerList[counter].Relation=str(relative.Relation)
-				RelativeDTO.BrugerList[counter].PersonImage=relative.PersonImage
-				RelativeDTO.BrugerList[counter].SOUND=relative.SOUND
-				if(RelativeDTO.BrugerList[counter].PersonID==1):
-					MainWindow.MainLabelList[0].config(text=RelativeDTO.BrugerList[counter].FirstName.title()+" " +RelativeDTO.BrugerList[counter].LastName.title())
-				elif (RelativeDTO.BrugerList[counter].PersonID==2):
-					MainWindow.MainLabelList[1].config(text=RelativeDTO.BrugerList[counter].FirstName.title()+" " +RelativeDTO.BrugerList[counter].LastName.title())
-				elif (RelativeDTO.BrugerList[counter].PersonID==3):
-					MainWindow.MainLabelList[2].config(text=RelativeDTO.BrugerList[counter].FirstName.title()+" " +RelativeDTO.BrugerList[counter].LastName.title())
-				elif (RelativeDTO.BrugerList[counter].PersonID==4):
-					MainWindow.MainLabelList[3].config(text=RelativeDTO.BrugerList[counter].FirstName.title()+" " +RelativeDTO.BrugerList[counter].LastName.title())
-				elif (RelativeDTO.BrugerList[counter].PersonID==5):
-					MainWindow.MainLabelList[4].config(text=RelativeDTO.BrugerList[counter].FirstName.title()+" " +RelativeDTO.BrugerList[counter].LastName.title())
-				elif (RelativeDTO.BrugerList[counter].PersonID==6):
-					MainWindow.MainLabelList[5].config(text=RelativeDTO.BrugerList[counter].FirstName.title()+" " +RelativeDTO.BrugerList[counter].LastName.title())
-				elif (RelativeDTO.BrugerList[counter].PersonID==7):
-					MainWindow.MainLabelList[6].config(text=RelativeDTO.BrugerList[counter].FirstName.title()+" " +RelativeDTO.BrugerList[counter].LastName.title())
-				elif (RelativeDTO.BrugerList[counter].PersonID==8):
-					MainWindow.MainLabelList[7].config(text=RelativeDTO.BrugerList[counter].FirstName.title()+" " +RelativeDTO.BrugerList[counter].LastName.title())
-				if RelativeDTO.BrugerList[counter].PersonImage !=None:
-					if(os.path.exists('ImageFolder/Bruger'+str(RelativeDTO.BrugerList[counter].PersonID)+'.png')):
-						os.remove('ImageFolder/Bruger'+str(RelativeDTO.BrugerList[counter].PersonID)+'.png')
-					imageString = RelativeDTO.BrugerList[counter].PersonImage
-					imagePre= io.BytesIO(imageString)	
-					img= Image.open(imagePre)
-					imageNameString=str(RelativeDTO.BrugerList[counter].PersonID)
-					img.save('ImageFolder/Bruger'+imageNameString+'.png')
-					Pictures.updatePicture(RelativeDTO.BrugerList[counter].PersonID)
-				if RelativeDTO.BrugerList[counter].SOUND !=None:
-					if(os.path.exists('AudioFolder/Bruger'+str(RelativeDTO.BrugerList[counter].PersonID)+'.mp3')):
-						os.remove('AudioFolder/Bruger'+str(RelativeDTO.BrugerList[counter].PersonID)+'.mp3')
-					audioString = RelativeDTO.BrugerList[counter].SOUND
-					audioPre= io.BytesIO(audioString)	
-					with open ('AudioFolder/Bruger'+str(row[0])+'.mp3','wb') as f:
-						f.write(audioPre.getbuffer())
-				#else:
-				#	ErrorWindow.openErrorWindow('Der var en fejl ved opdatering af data.')
-				counter+=1
+			try:
+				m=mycursor.execute(query)
+				allRows = mycursor.fetchall()
+				counter=0
+				counter1=0
+				changedRows=[]
+				for row in allRows:
+					RelativeObj=Relative(row[0],str(row[1]),str(row[2]),str(row[3]),str(row[4]),row[5],row[6])
+					if(RelativeDTO.BrugerList[counter].PersonID==row[0]):
+						RelativeDTO.BrugerList[counter].PersonID=row[0]
+						changedRows.append(Relative(row[0],str(row[1]),str(row[2]),str(row[3]),str(row[4]),row[5],row[6]))
+						counter1+=1
+				for relative in changedRows:
+					RelativeDTO.BrugerList[counter].PersonID= relative.PersonID
+					RelativeDTO.BrugerList[counter].LastName=str(relative.LastName)
+					RelativeDTO.BrugerList[counter].FirstName=str(relative.FirstName)
+					RelativeDTO.BrugerList[counter].DateOfBirth=str(relative.DateOfBirth)
+					RelativeDTO.BrugerList[counter].Relation=str(relative.Relation)
+					RelativeDTO.BrugerList[counter].PersonImage=relative.PersonImage
+					RelativeDTO.BrugerList[counter].SOUND=relative.SOUND
+					if(RelativeDTO.BrugerList[counter].PersonID==1):
+						MainWindow.MainLabelList[0].config(text=RelativeDTO.BrugerList[counter].FirstName.title()+" " +RelativeDTO.BrugerList[counter].LastName.title())
+					elif (RelativeDTO.BrugerList[counter].PersonID==2):
+						MainWindow.MainLabelList[1].config(text=RelativeDTO.BrugerList[counter].FirstName.title()+" " +RelativeDTO.BrugerList[counter].LastName.title())
+					elif (RelativeDTO.BrugerList[counter].PersonID==3):
+						MainWindow.MainLabelList[2].config(text=RelativeDTO.BrugerList[counter].FirstName.title()+" " +RelativeDTO.BrugerList[counter].LastName.title())
+					elif (RelativeDTO.BrugerList[counter].PersonID==4):
+						MainWindow.MainLabelList[3].config(text=RelativeDTO.BrugerList[counter].FirstName.title()+" " +RelativeDTO.BrugerList[counter].LastName.title())
+					elif (RelativeDTO.BrugerList[counter].PersonID==5):
+						MainWindow.MainLabelList[4].config(text=RelativeDTO.BrugerList[counter].FirstName.title()+" " +RelativeDTO.BrugerList[counter].LastName.title())
+					elif (RelativeDTO.BrugerList[counter].PersonID==6):
+						MainWindow.MainLabelList[5].config(text=RelativeDTO.BrugerList[counter].FirstName.title()+" " +RelativeDTO.BrugerList[counter].LastName.title())
+					elif (RelativeDTO.BrugerList[counter].PersonID==7):
+						MainWindow.MainLabelList[6].config(text=RelativeDTO.BrugerList[counter].FirstName.title()+" " +RelativeDTO.BrugerList[counter].LastName.title())
+					elif (RelativeDTO.BrugerList[counter].PersonID==8):
+						MainWindow.MainLabelList[7].config(text=RelativeDTO.BrugerList[counter].FirstName.title()+" " +RelativeDTO.BrugerList[counter].LastName.title())
+					if RelativeDTO.BrugerList[counter].PersonImage !=None:
+						if(os.path.exists('ImageFolder/Bruger'+str(RelativeDTO.BrugerList[counter].PersonID)+'.png')):
+							os.remove('ImageFolder/Bruger'+str(RelativeDTO.BrugerList[counter].PersonID)+'.png')
+						imageString = RelativeDTO.BrugerList[counter].PersonImage
+						imagePre= io.BytesIO(imageString)	
+						img= Image.open(imagePre)
+						imageNameString=str(RelativeDTO.BrugerList[counter].PersonID)
+						img.save('ImageFolder/Bruger'+imageNameString+'.png')
+						Pictures.updatePicture(RelativeDTO.BrugerList[counter].PersonID)
+					if RelativeDTO.BrugerList[counter].SOUND !=None:
+						if(os.path.exists('AudioFolder/Bruger'+str(RelativeDTO.BrugerList[counter].PersonID)+'.mp3')):
+							os.remove('AudioFolder/Bruger'+str(RelativeDTO.BrugerList[counter].PersonID)+'.mp3')
+						audioString = RelativeDTO.BrugerList[counter].SOUND
+						audioPre= io.BytesIO(audioString)	
+						with open ('AudioFolder/Bruger'+str(row[0])+'.mp3','wb') as f:
+							f.write(audioPre.getbuffer())
+					counter+=1
+			except:
+				ErrorWindow.openErrorWindow()
 			time.sleep(10)
 												
 class Pictures:
@@ -305,7 +306,6 @@ class ErrorWindow:
 			CloseWindow.pack()
 			CloseWindow.place(x=350,y=250)
 	def closeErrorWindow():
-		AudioPlayer.Stop()
 		ErrorWindow.destroy()		
 
 class RelativeWindow:
