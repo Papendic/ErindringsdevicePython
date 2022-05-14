@@ -5,11 +5,13 @@ from tkinter import font
 from PIL import ImageTk, Image
 import os
 import mysql.connector
+from mysql.connector import Error
 import PIL.Image as Image
 import io
 import pyodbc
 import threading as th
-import time
+import time 
+import sys
 from pygame import mixer
 
 class Root:
@@ -71,12 +73,12 @@ class Relative:
 class DataAccess:
 
 	cwd = os.getcwd()
-	def DownloadOnStartUp():
+	def DownloadOnStartUp(self):
 		BrugerList=[]
-		conn=mysql.connector.connect(host='34.88.203.155',user='UserAnton',password='RelativeDatabase',database='RelativeDatabase')
-		mycursor=conn.cursor()
-		query="""SELECT * FROM RelativeDatabase"""
-		try:	
+		try:
+			conn=mysql.connector.connect(host='34.88.203.155',user='UserAnton',password='RelativeDatabase',database='RelativeDatabase')
+			mycursor=conn.cursor()
+			query="""SELECT * FROM RelativeTable"""	
 			m=mycursor.execute(query)
 			allRows = mycursor.fetchall()
 			for row in allRows:
@@ -103,17 +105,19 @@ class DataAccess:
 					with open ('AudioFolder/Bruger'+str(PersonID)+'.mp3','wb') as f:
 						f.write(audioPre.getbuffer())
 				BrugerList.append(Relative(PersonID,LastName,FirstName,DateOfBirth,Relation,PersonImage,SOUND))
-		except:		
-			ErrowWindow.openErrorWindow()
+		except mysql.connector.Error as e:	
+			print("Error in connection", e)
+			startup=True
+			ErrorWindow.openErrorWindow(startup)
 		return BrugerList
 
 	def update_search():
 		while(True):
 			print("Tjekker db") 
-			conn=mysql.connector.connect(host='34.88.203.155',user='UserAnton',password='RelativeDatabase',database='RelativeDatabase')
-			mycursor=conn.cursor()
-			query="""SELECT * from RelativeTable"""
 			try:
+				conn=mysql.connector.connect(host='34.88.203.155',user='UserAnton',password='RelativeDatabase',database='RelativeDatabase')
+				mycursor=conn.cursor()
+				query="""SELECT * from RelativeTable"""
 				m=mycursor.execute(query)
 				allRows = mycursor.fetchall()
 				counter=0
@@ -166,8 +170,10 @@ class DataAccess:
 						with open ('AudioFolder/Bruger'+str(row[0])+'.mp3','wb') as f:
 							f.write(audioPre.getbuffer())
 					counter+=1
-			except:
-				ErrorWindow.openErrorWindow()
+			except mysql.connector.Error as e:	
+				print("Error in connection", e)
+				startup=False
+				ErrorWindow.openErrorWindow(startup)
 			time.sleep(10)
 												
 class Pictures:
@@ -276,37 +282,43 @@ class Pictures:
 
 	Lyd1Billede = Image.open(cwdSound+"\Lyd1.JPG")
 	Lyd1BilledeResize=Lyd1Billede.resize((60,60),Image.ANTIALIAS)
-	newLyd1BilledeResize = ImageTk.PhotoImage(NewLyd1BilledeResize)
+	newLyd1BilledeResize = ImageTk.PhotoImage(Lyd1BilledeResize)
 
 	Lyd2Billede = Image.open(cwdSound+"\Lyd2.JPG")
 	Lyd2BilledeResize=Lyd2Billede.resize((60,60),Image.ANTIALIAS)
-	newLyd2BilledeResize = ImageTk.PhotoImage(NewLyd2BilledeResize)
+	newLyd2BilledeResize = ImageTk.PhotoImage(Lyd2BilledeResize)
 
 	Lyd3Billede = Image.open(cwdSound+"\Lyd3.JPG")
 	Lyd3BilledeResize=Lyd3Billede.resize((60,60),Image.ANTIALIAS)
-	newLyd3BilledeResize = ImageTk.PhotoImage(NewLyd3BilledeResize)
+	newLyd3BilledeResize = ImageTk.PhotoImage(Lyd3BilledeResize)
 
 	PlaybuttonBillede = Image.open(cwdSound+"\Pauseplay.png")
 	PlaybuttonResize=PlaybuttonBillede.resize((135,135),Image.ANTIALIAS)
-	NewPlaybuttonBillede = ImageTk.PhotoImage(NewPlaybuttonBillede)
+	NewPlaybuttonBillede = ImageTk.PhotoImage(PlaybuttonResize)
 				
 class ErrorWindow:
-	def openErrorWindow():
-		errorWindow=Toplevel(Root.window)
-		errorWindow.title("Error Window")
-		errorWindow.geometry("800x480")
-		errorWindow.attributes('-topmost', True)
-		#On RPI set the below condition
-		#errorrWindow.attributes('-fullscreen',True)
-		Label(errorWindow,text="Error Window")
-		if(ErrorType=='AudioError'):
+	isOpen=False
+	def openErrorWindow(isStartup):
+		if ErrorWindow.isOpen==False:
+			ErrorWindow.isOpen=True
+			errorWindow=Toplevel(Root.root)
+			errorWindow.title("Error Window")
+			errorWindow.geometry("800x480")
+			errorWindow.attributes('-topmost', True)
+			#On RPI set the below condition
+			#errorrWindow.attributes('-fullscreen',True)
+			Label(errorWindow,text="Error Window")
 			errorLabel=Label(errorWindow,text='Der kunne ikke oprettes internet forbindelse',font=("Cambria",20))
-			errorLabel.place(x=350,y=50)
-			CloseWindow = Button(errorWindow, height ='2', width='20',bg='white', text='Godkend', command=errorWindow.closeErrorWindow)
+			errorLabel.place(x=150,y=50)
+			CloseWindow = Button(errorWindow, height ='2', width='20',bg='LightPink1', text='Godkend', command=lambda: ErrorWindow.closeErrorWindow(errorWindow,isStartup),font=("Cambria",20))
 			CloseWindow.pack()
-			CloseWindow.place(x=350,y=250)
-	def closeErrorWindow():
-		ErrorWindow.destroy()		
+			CloseWindow.place(x=250,y=250)
+	def closeErrorWindow(window, isStartUp):
+		window.destroy()
+		ErrorWindow.isOpen=False
+		if(isStartUp==True):
+			Root.root.destroy()
+			RelativeDTO.x.join()
 
 class RelativeWindow:
 	isPlaying=False
@@ -357,7 +369,7 @@ class RelativeWindow:
 		PlaySound.pack()
 		PlaySound.place(x=590,y=250)
 
-		CloseWindow = Button(newWindow, height ='1', width='13',bg='LightPink1', text='Luk vinduet', command=lambda: RelativeWindow.closeRelativeWindow(newWindow),font=("Cambria",25))
+		CloseWindow = Button(newWindow, height ='1', width='13',bg='LightPink1', text='Tilbage', command=lambda: RelativeWindow.closeRelativeWindow(newWindow),font=("Cambria",25))
 		CloseWindow.pack()
 		CloseWindow.place(x=530,y=400)
 
@@ -382,7 +394,7 @@ class RelativeWindow:
 		RelativeWindow.ButtonList.append(Lyd3)
 		AudioPlayer.StopOrPlay(RelativeWindow._id,RelativeWindow.isPlaying)
 
-	def closeRelativeWindow():
+	def closeRelativeWindow(newWindow):
 		RelativeWindow.ButtonList=[]
 		AudioPlayer.Stop()
 		newWindow.destroy()
@@ -498,10 +510,6 @@ class MainWindow:
 	Lyd3.pack()
 	Lyd3.place(x=400,y=400)
 	MainAudioList.append(Lyd3)
-
-	CloseWindow = Button(MainWindow, height ='2', width='20',bg='LightPink1', text='Luk vinduet', font=("Cambria",15), command=Root.root.destroy)
-	CloseWindow.pack()
-	CloseWindow.place(x=530,y=400)
 
 	def ConfigColor(ButtonId):
 		for button in MainWindow.MainAudioList:
